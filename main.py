@@ -1,29 +1,27 @@
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from itertools import product
+import sys
 
 def generate_xor_data(num_inputs):
-    """Generate training data for XOR with specified number of inputs."""
     # Generate all possible binary input combinations
     inputs = list(product([0, 1], repeat=num_inputs))
     X = np.array(inputs)
     
-    # Calculate XOR output for each input combination
     y = np.zeros(len(X))
     for i, x in enumerate(X):
         result = x[0]
         for j in range(1, len(x)):
-            result = result ^ x[j]  # XOR operation
+            result = result ^ x[j] 
         y[i] = result
         
     return X, y
 
 def create_and_train_model(X, y):
-    """Create and train neural network for XOR problem."""
     num_inputs = len(X[0])
     
-    # Create MLPClassifier with improved architecture
-    # - Two hidden layers with more neurons
+    # Create MLPClassifier (multi layer perceptron)
+    # - 2 hidden layers with more neurons
     # - tanh activation for better XOR learning
     # - Adam optimizer with increased iterations
     model = MLPClassifier(
@@ -72,7 +70,6 @@ def run_integration_tests(num_inputs=3):
     return True
 
 def main(num_inputs=3):
-    """Main function to demonstrate XOR neural network."""
     # Generate training data
     X, y = generate_xor_data(num_inputs)
     
@@ -92,10 +89,8 @@ def main(num_inputs=3):
     print(f"\nModel accuracy: {accuracy*100:.2f}%")
 
 if __name__ == "__main__":
-    binary_inputs = 5
+    binary_inputs = int(sys.argv[1]) if len(sys.argv) >= 2 else 5
     
-    # Run integration tests first
     run_integration_tests(binary_inputs)
-    
-    # Run main demonstration
+
     main(binary_inputs)
