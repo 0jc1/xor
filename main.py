@@ -6,8 +6,8 @@ import sys
 def generate_xor_data(num_inputs):
     # Generate all possible binary input combinations
     inputs = list(product([0, 1], repeat=num_inputs))
-    X = np.array(inputs)
-    
+    X : np.ndarray = np.array(inputs)
+
     y = np.zeros(len(X))
     for i, x in enumerate(X):
         result = x[0]
@@ -17,7 +17,7 @@ def generate_xor_data(num_inputs):
         
     return X, y
 
-def create_and_train_model(X, y):
+def create_and_train_model(X : np.ndarray, y):
     num_inputs = len(X[0])
     
     # Create MLPClassifier (multi layer perceptron)
@@ -37,14 +37,12 @@ def create_and_train_model(X, y):
     model.fit(X, y)
     return model
 
-def test_model(model, X, y):
-    """Test model predictions against expected outputs."""
+def test_model(model, X : np.ndarray, y):
     predictions = model.predict(X)
     accuracy = model.score(X, y)
     return predictions, accuracy
 
 def run_integration_tests(num_inputs=3):
-    """Run integration tests for the XOR neural network."""
     # Test data generation
     X, y = generate_xor_data(num_inputs)
     assert len(X) == 2**num_inputs, f"Expected {2**num_inputs} input combinations"
@@ -79,7 +77,6 @@ def main(num_inputs=3):
     # Test model
     predictions, accuracy = test_model(model, X, y)
     
-    # Print results
     print(f"\nResults for {num_inputs}-input XOR:")
     print("Input combinations -> Predicted (Expected)")
     print("-" * 40)
