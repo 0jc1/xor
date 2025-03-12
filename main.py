@@ -20,16 +20,19 @@ def generate_xor_data(num_inputs):
 
 def create_and_train_model(X, y):
     """Create and train neural network for XOR problem."""
-    # Create MLPClassifier with appropriate architecture
-    # - One hidden layer with 2^(num_inputs) neurons
-    # - ReLU activation for better training
-    # - Adam optimizer for efficient training
+    num_inputs = len(X[0])
+    
+    # Create MLPClassifier with improved architecture
+    # - Two hidden layers with more neurons
+    # - tanh activation for better XOR learning
+    # - Adam optimizer with increased iterations
     model = MLPClassifier(
-        hidden_layer_sizes=(2**len(X[0]),),
-        activation='relu',
+        hidden_layer_sizes=(max(4, 2**num_inputs), max(4, 2**(num_inputs-1))),
+        activation='tanh',
         solver='adam',
-        random_state=42,
-        max_iter=1000
+        learning_rate_init=0.01,
+        max_iter=5000,
+        random_state=42
     )
     
     # Train the model
@@ -50,7 +53,7 @@ def run_integration_tests(num_inputs=3):
     
     # Test model creation and training
     model = create_and_train_model(X, y)
-    assert model.n_layers_ == 3, "Model should have 3 layers (input, hidden, output)"
+    assert model.n_layers_ == 4, "Model should have 4 layers (input, 2 hidden, output)"
     
     # Test predictions
     predictions, accuracy = test_model(model, X, y)
@@ -89,7 +92,7 @@ def main(num_inputs=3):
     print(f"\nModel accuracy: {accuracy*100:.2f}%")
 
 if __name__ == "__main__":
-    binary_inputs = 3
+    binary_inputs = 5
     
     # Run integration tests first
     run_integration_tests(binary_inputs)
